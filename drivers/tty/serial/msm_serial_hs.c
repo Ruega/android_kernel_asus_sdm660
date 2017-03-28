@@ -2861,6 +2861,8 @@ static int uartdm_init_port(struct uart_port *uport)
 	}
 	sched_setscheduler(rx->task, SCHED_FIFO, &param);
 
+	init_kthread_work(&rx->kwork, msm_serial_hs_rx_work);
+
 	kthread_init_work(&rx->kwork, msm_serial_hs_rx_work);
 
 	kthread_init_worker(&tx->kworker);

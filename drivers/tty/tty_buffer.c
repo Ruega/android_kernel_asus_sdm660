@@ -132,8 +132,7 @@ void tty_buffer_free_all(struct tty_port *port)
 	buf->tail = &buf->sentinel;
 
 	atomic_set(&buf->mem_used, 0);
-	if (!IS_ERR_OR_NULL(port->worker_thread))
-		kthread_stop(port->worker_thread);
+	kthread_stop(port->worker_thread);
 }
 
 /**
@@ -565,13 +564,8 @@ void tty_buffer_init(struct tty_port *port)
 	atomic_set(&buf->mem_used, 0);
 	atomic_set(&buf->priority, 0);
 	buf->mem_limit = TTYB_DEFAULT_MEM_LIMIT;
-<<<<<<< HEAD
-	init_kthread_work(&buf->work, flush_to_ldisc);
-	init_kthread_worker(&port->worker);
-=======
 	kthread_init_work(&buf->work, flush_to_ldisc);
 	kthread_init_worker(&port->worker);
->>>>>>> 5df20e09ff20 (drivers: tty: kthread worker API cleanup)
 	port->worker_thread = kthread_run(kthread_worker_fn, &port->worker,
 					  "tty_worker_thread");
 	if (IS_ERR(port->worker_thread)) {

@@ -406,11 +406,7 @@ void tty_schedule_flip(struct tty_port *port)
 	 * flush_to_ldisc() sees buffer data.
 	 */
 	smp_store_release(&buf->tail->commit, buf->tail->used);
-<<<<<<< HEAD
-	queue_kthread_work(&port->worker, &buf->work);
-=======
 	kthread_queue_work(&port->worker, &buf->work);
->>>>>>> 5df20e09ff20 (drivers: tty: kthread worker API cleanup)
 }
 EXPORT_SYMBOL(tty_schedule_flip);
 
@@ -586,10 +582,6 @@ void tty_buffer_init(struct tty_port *port)
 		pr_err("Unable to start tty_worker_thread\n");
 	}
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 5df20e09ff20 (drivers: tty: kthread worker API cleanup)
 }
 
 /**
@@ -617,11 +609,7 @@ void tty_buffer_set_lock_subclass(struct tty_port *port)
 
 bool tty_buffer_restart_work(struct tty_port *port)
 {
-<<<<<<< HEAD
-	return queue_kthread_work(&port->worker, &port->buf.work);
-=======
 	return kthread_queue_work(&port->worker, &port->buf.work);
->>>>>>> 5df20e09ff20 (drivers: tty: kthread worker API cleanup)
 }
 
 bool tty_buffer_cancel_work(struct tty_port *port)
@@ -631,9 +619,5 @@ bool tty_buffer_cancel_work(struct tty_port *port)
 
 void tty_buffer_flush_work(struct tty_port *port)
 {
-<<<<<<< HEAD
-	flush_kthread_work(&port->buf.work);
-=======
 	kthread_flush_work(&port->buf.work);
->>>>>>> 5df20e09ff20 (drivers: tty: kthread worker API cleanup)
 }
